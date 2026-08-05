@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #080814, #12122b);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 20px;
+}
+.stars {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(#b78cff 1px, transparent 1px);
+  background-size: 70px 70px, 120px 120px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+}
+.container { width: 100%; max-width: 450px; z-index: 2; position: relative; }
+.progress-container {
+  width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none;
+}
+.progress-bar { height: 100%; width: 0%; background: #8b5cf6; transition: width 0.3s; }
+.card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px; padding: 35px 25px; text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+.alien { font-size: 60px; margin-bottom: 10px; }
+h1 { font-size: 22px; margin-bottom: 12px; }
+p { color: #d1d5db; line-height: 1.5; font-size: 14px; margin-bottom: 15px; }
+.btn-primary {
+  margin-top: 15px; width: 100%; padding: 14px; border: none;
+  border-radius: 50px; background: #8b5cf6; color: white;
+  font-size: 15px; font-weight: bold; cursor: pointer;
+}
+.options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.option-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white; padding: 12px 15px; border-radius: 14px;
+  font-size: 13px; text-align: left; cursor: pointer;
+}
+textarea {
+  width: 100%; height: 100px; background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px;
+  padding: 12px; color: white; font-size: 14px; resize: none; margin-top: 10px;
+}
+.letter-box {
+  text-align: left; font-size: 13px; white-space: pre-line;
+  background: rgba(0, 0, 0, 0.3); padding: 18px; border-radius: 14px;
+  border-left: 3px solid #8b5cf6; max-height: 220px; overflow-y: auto; color: #e5e7eb;
+}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<div class="container">
+  <div id="pContainer" class="progress-container">
+    <div id="pBar" class="progress-bar"></div>
+  </div>
+  <div class="card" id="box"></div>
+</div>
+
+<script>
+const qList = [
+  { type: "c", q: "Which sentence feels closest to how you feel about us today?", o: ["🌱 I still feel happy and comfortable with us.", "🌙 I still care, but life has been overwhelming lately.", "🌧️ Something feels different, but I don't know how to explain it.", "🪐 I'm still trying to understand my feelings."] },
+  { type: "c", q: "Compared to when we first met, what changed the most?", o: ["Nothing, we just grew closer.", "The way we communicate.", "The amount of time we spend together.", "The way we show love."] },
+  { type: "c", q: "When Lucky says 'I miss you', what happens inside your mind?", o: ["I miss her too.", "I feel happy but don't know what to say.", "I feel guilty because I can't give enough time.", "I feel pressured."] },
+  { type: "c", q: "Right now, what takes most of your energy?", o: ["💼 Work", "📚 Study", "👥 Social life", "🧠 Personal thoughts", "❤️ Relationship", "⚖️ Trying to balance everything"] },
+  { type: "c", q: "How do you usually show love when you are busy?", o: ["Through words.", "Through actions.", "Through spending time.", "I don't know, I struggle to show it."] },
+  { type: "t", q: "What is something you wish Lucky understood about you?", p: "Type your thoughts here..." },
+  { type: "t", q: "What is something you wish Lucky felt more from you?", p: "Type your thoughts here..." },
+  { type: "t", q: "What is one thing you miss about us?", p: "Type your thoughts here..." },
+  { type: "t", q: "What do you think we need to improve together?", p: "Type your thoughts here..." },
+  { type: "t", q: "If you could leave one honest message for Lucky, what would it be?", p: "Write your message..." }
+];
+
+let idx = 0;
+const box = document.getElementById('box');
+const pContainer = document.getElementById('pContainer');
+const pBar = document.getElementById('pBar');
+
+function renderLanding() {
+  box.innerHTML = `
+    <div class="alien">👽</div>
+    <h1>Hi, Vincent.</h1>
+    <p>A tiny alien came from Lucky's universe.</p>
+    <p><i>"I'm here because someone cares about understanding you."</i></p>
+    <button class="btn-primary" onclick="renderPromise()">Enter the universe ✨</button>
+  `;
+}
+
+function renderPromise() {
+  box.innerHTML = `
+    <div class="alien">🌌</div>
+    <h1>Before We Start...</h1>
+    <p>This is not a test. There is no right or wrong answer.</p>
+    <p>You don't have to choose the answer that makes someone happy.</p>
+    <p><strong>Just choose the one that feels closest to your heart.</strong></p>
+    <button class="btn-primary" onclick="startQuiz()">I understand 🤍</button>
+  `;
+}
+
+function startQuiz() {
+  idx = 0;
+  pContainer.style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  pBar.style.width = ((idx + 1) / qList.length * 100) + '%';
+  const item = qList[idx];
+  
+  if (item.type === 'c') {
+    let btns = item.o.map(opt => `<button class="option-btn" onclick="nextQ()">${opt}</button>`).join('');
+    box.innerHTML = `
+      <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
+      <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
+      <div class="options-grid">${btns}</div>
+    `;
+  } else {
+    box.innerHTML = `
+      <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
+      <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
+      <textarea placeholder="${item.p}"></textarea>
+      <button class="btn-primary" onclick="nextQ()">Next →</button>
+    `;
+  }
+}
+
+function nextQ() {
+  idx++;
+  if (idx < qList.length) {
+    renderQuestion();
+  } else {
+    pContainer.style.display = 'none';
+    renderReflection();
+  }
+}
+
+function renderReflection() {
+  box.innerHTML = `
+    <div class="alien">🪐</div>
+    <h1>Thank You, Vincent.</h1>
+    <p>Some feelings are difficult to say out loud.</p>
+    <p>But every honest answer deserves to be heard.</p>
+    <button class="btn-primary" onclick="renderLetter()">A letter from Lucky 💌</button>
+  `;
+}
+
+function renderLetter() {
+  box.innerHTML = `
+    <div class="alien">💌</div>
+    <h1>For You</h1>
+    <div class="letter-box">
+Hi Vincent,
+
+I made this because I didn't want to keep guessing or asking questions that feel like pressure. 
+
+I don't need you to be perfect, and I'm not here to blame you for anything. I just want to know if we're still walking in the same direction, or if you need a moment to breathe.
+
+Thank you for being honest in every step today.
+    </div>
+    <button class="btn-primary" onclick="renderEnding()">Complete Mission →</button>
+  `;
+}
+
+function renderEnding() {
+  box.innerHTML = `
+    <div class="alien">🛸</div>
+    <h1>Mission Completed 👽</h1>
+    <p>Whatever happens next, thank you for being honest.</p>
+    <p style="font-size: 12px; color: #a78bfa;">You can now close this tab.</p>
+  `;
+}
+
+renderLanding();
+</script>
+</body>
+</html>
+
