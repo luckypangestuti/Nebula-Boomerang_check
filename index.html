@@ -93,6 +93,7 @@ const qList = [
 ];
 
 let idx = 0;
+const answers = {};
 const box = document.getElementById('box');
 const pContainer = document.getElementById('pContainer');
 const pBar = document.getElementById('pBar');
@@ -129,7 +130,7 @@ function renderQuestion() {
   const item = qList[idx];
   
   if (item.type === 'c') {
-    let btns = item.o.map(opt => `<button class="option-btn" onclick="nextQ()">${opt}</button>`).join('');
+    let btns = item.o.map(opt => `<button class="option-btn" onclick="saveChoice('${opt.replace(/'/g, "\\'")}')">${opt}</button>`).join('');
     box.innerHTML = `
       <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
       <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
@@ -139,10 +140,21 @@ function renderQuestion() {
     box.innerHTML = `
       <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
       <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
-      <textarea placeholder="${item.p}"></textarea>
-      <button class="btn-primary" onclick="nextQ()">Next →</button>
+      <textarea id="essayVal" placeholder="${item.p}"></textarea>
+      <button class="btn-primary" onclick="saveText()">Next →</button>
     `;
   }
+}
+
+function saveChoice(val) {
+  answers[`Q${idx + 1}: ${qList[idx].q}`] = val;
+  nextQ();
+}
+
+function saveText() {
+  const el = document.getElementById('essayVal');
+  answers[`Q${idx + 1}: ${qList[idx].q}`] = el ? (el.value.trim() || "(Skipped)") : "(Skipped)";
+  nextQ();
 }
 
 function nextQ() {
@@ -166,6 +178,11 @@ function renderReflection() {
 }
 
 function renderLetter() {
+  let inputsHTML = '';
+  for (const [k, v] of Object.entries(answers)) {
+    inputsHTML += `<input type="hidden" name="${k}" value="${v}">`;
+  }
+
   box.innerHTML = `
     <div class="alien">💌</div>
     <h1>For You</h1>
@@ -178,16 +195,13 @@ I don't need you to be perfect, and I'm not here to blame you for anything. I ju
 
 Thank you for being honest in every step today.
     </div>
-    <button class="btn-primary" onclick="renderEnding()">Complete Mission →</button>
-  `;
-}
-
-function renderEnding() {
-  box.innerHTML = `
-    <div class="alien">🛸</div>
-    <h1>Mission Completed 👽</h1>
-    <p>Whatever happens next, thank you for being honest.</p>
-    <p style="font-size: 12px; color: #a78bfa;">You can now close this tab.</p>
+    <form action="https://formsubmit.co/luckypangestuti@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="New Alien Check Answers from Vincent!">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      ${inputsHTML}
+      <button type="submit" class="btn-primary">Complete Mission →</button>
+    </form>
   `;
 }
 
