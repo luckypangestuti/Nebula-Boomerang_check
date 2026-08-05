@@ -1,336 +1,197 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alien Check - Nebula Boomerang</title>
-  <style>
-    :root {
-      --bg: #090a0f;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.12);
-      --accent: #a78bfa;
-      --text: #f3f4f6;
-      --text-sub: #9ca3af;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Background Stars Effect */
-    .stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                  radial-gradient(1.5px 1.5px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-                  radial-gradient(2px 2px at 90px 40px, #a78bfa, rgba(0,0,0,0)),
-                  radial-gradient(1.5px 1.5px at 160px 120px, #ffffff, rgba(0,0,0,0));
-      background-repeat: repeat;
-      background-size: 200px 200px;
-      opacity: 0.6;
-      z-index: 0;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 480px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    .alien {
-      font-size: 3rem;
-      margin-bottom: 12px;
-      display: inline-block;
-    }
-
-    h1, h2 {
-      font-weight: 600;
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-
-    p {
-      color: var(--text-sub);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    p i {
-      color: var(--accent);
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-      margin-bottom: 24px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
-
-    .q-number {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--accent);
-      margin-bottom: 8px;
-      text-align: left;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    button, .btn {
-      width: 100%;
-      padding: 14px 20px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--text);
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
-    }
-
-    button:hover, .btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--accent);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      font-weight: 600;
-      text-align: center;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background: #c4b5fd;
-    }
-
-    textarea {
-      width: 100%;
-      height: 110px;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.2);
-      color: var(--text);
-      font-size: 0.95rem;
-      margin-bottom: 20px;
-      resize: none;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: var(--accent);
-    }
-
-    .letter-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 24px;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: #e5e7eb;
-      text-align: left;
-    }
-  </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #080814, #12122b);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 20px;
+}
+.stars {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(#b78cff 1px, transparent 1px);
+  background-size: 70px 70px, 120px 120px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+}
+.container { width: 100%; max-width: 450px; z-index: 2; position: relative; }
+.progress-container {
+  width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none;
+}
+.progress-bar { height: 100%; width: 0%; background: #8b5cf6; transition: width 0.3s; }
+.card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px; padding: 35px 25px; text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+.alien { font-size: 60px; margin-bottom: 10px; }
+h1 { font-size: 22px; margin-bottom: 12px; }
+p { color: #d1d5db; line-height: 1.5; font-size: 14px; margin-bottom: 15px; }
+.btn-primary {
+  margin-top: 15px; width: 100%; padding: 14px; border: none;
+  border-radius: 50px; background: #8b5cf6; color: white;
+  font-size: 15px; font-weight: bold; cursor: pointer;
+}
+.options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.option-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white; padding: 12px 15px; border-radius: 14px;
+  font-size: 13px; text-align: left; cursor: pointer;
+}
+textarea {
+  width: 100%; height: 100px; background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px;
+  padding: 12px; color: white; font-size: 14px; resize: none; margin-top: 10px;
+}
+.letter-box {
+  text-align: left; font-size: 13px; white-space: pre-line;
+  background: rgba(0, 0, 0, 0.3); padding: 18px; border-radius: 14px;
+  border-left: 3px solid #8b5cf6; max-height: 220px; overflow-y: auto; color: #e5e7eb;
+}
+</style>
 </head>
 <body>
 
-  <div class="stars"></div>
+<div class="stars"></div>
 
-  <div class="container">
-
-    <!-- SCREEN 1: WELCOME (PEMBUKA SPESIAL FOR VINCENT) -->
-    <div id="scr-welcome" class="screen active">
-      <div class="alien">👽</div>
-      <h1>Hi, Vincent.</h1>
-      <p>A tiny alien came from Lucky's universe.</p>
-      <p><i>"I'm here because someone cares about understanding you."</i></p>
-      <button class="btn-primary" onclick="showScreen('scr-rules')">Enter the universe ✨</button>
-    </div>
-
-    <!-- SCREEN 2: BRIEFING / RULES -->
-    <div id="scr-rules" class="screen">
-      <div class="alien">🌌</div>
-      <h1>Before We Start...</h1>
-      <p>This is not a test.<br>There is no right or wrong answer.</p>
-      <p>You don't have to choose the answer that makes someone happy.</p>
-      <p><strong>Just choose the one that feels closest to your heart.</strong></p>
-      <button class="btn-primary" onclick="startQuiz()">I understand 🤍</button>
-    </div>
-
-    <!-- SCREEN 3: QUIZ -->
-    <div id="scr-quiz" class="screen" style="text-align: left;">
-      <div class="progress-bar">
-        <div id="prog-fill" class="progress-fill"></div>
-      </div>
-      <div id="q-num" class="q-number">Question 1 / 10</div>
-      <h2 id="q-text" style="text-align: left;">Loading question...</h2>
-
-      <div id="mc-options" class="btn-group"></div>
-
-      <div id="essay-box" style="display: none;">
-        <textarea id="essay-input" placeholder="Type your honest answer here..."></textarea>
-        <button class="btn-primary" onclick="nextQuestion()">Next →</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 4: LETTER & SUBMIT -->
-    <div id="scr-letter" class="screen">
-      <div class="alien">💌</div>
-      <h2>A letter from Lucky</h2>
-      <div class="letter-box">
-        Thank you for walking through these questions with me. I value every honest word you share. No matter where we are or how busy life gets, this space is always open for us.
-      </div>
-      
-      <!-- FORM SUBMIT DIRECT TO EMAIL -->
-      <form action="https://formsubmit.co/luckypangestuti@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="New Alien Check Answers from Vincent!">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <div id="hidden-inputs"></div>
-        <button type="submit" class="btn-primary">Finish & Send Answers 👽</button>
-      </form>
-    </div>
-
+<div class="container">
+  <div id="pContainer" class="progress-container">
+    <div id="pBar" class="progress-bar"></div>
   </div>
+  <div class="card" id="box"></div>
+</div>
 
-  <script>
-    const qList = [
-      { type: 'mc', q: "Which sentence feels closest to how you feel about us today?", opts: ["We're solid and steady.", "We need a little tune-up.", "I feel a bit distant lately.", "Growing together step by step."] },
-      { type: 'mc', q: "Compared to when we first met, what changed the most?", opts: ["We communicate better.", "We got busier.", "We understand each other's boundaries.", "Things feel more comfortable."] },
-      { type: 'mc', q: "When Lucky says 'I miss you', what happens inside your mind?", opts: ["Warm feeling inside.", "Wish I could be there right away.", "Calm and reassuring.", "Reminds me to check in on her."] },
-      { type: 'mc', q: "Right now, what takes most of your energy?", opts: ["Work / Career", "Personal thoughts / Growth", "Daily routines", "Relationship dynamics"] },
-      { type: 'mc', q: "How do you usually show love when you are busy?", opts: ["Quick text updates", "Quality time when free", "Small thoughtful acts", "Listening whenever possible"] },
-      { type: 'essay', q: "What is something you wish Lucky understood about you?" },
-      { type: 'essay', q: "What is something you wish Lucky felt more from you?" },
-      { type: 'essay', q: "What is one thing you miss about us?" },
-      { type: 'essay', q: "What do you think we need to improve together?" },
-      { type: 'essay', q: "If you could leave one honest message for Lucky, what would it be?" }
-    ];
+<script>
+const qList = [
+  { type: "c", q: "Which sentence feels closest to how you feel about us today?", o: ["🌱 I still feel happy and comfortable with us.", "🌙 I still care, but life has been overwhelming lately.", "🌧️ Something feels different, but I don't know how to explain it.", "🪐 I'm still trying to understand my feelings."] },
+  { type: "c", q: "Compared to when we first met, what changed the most?", o: ["Nothing, we just grew closer.", "The way we communicate.", "The amount of time we spend together.", "The way we show love."] },
+  { type: "c", q: "When Lucky says 'I miss you', what happens inside your mind?", o: ["I miss her too.", "I feel happy but don't know what to say.", "I feel guilty because I can't give enough time.", "I feel pressured."] },
+  { type: "c", q: "Right now, what takes most of your energy?", o: ["💼 Work", "📚 Study", "👥 Social life", "🧠 Personal thoughts", "❤️ Relationship", "⚖️ Trying to balance everything"] },
+  { type: "c", q: "How do you usually show love when you are busy?", o: ["Through words.", "Through actions.", "Through spending time.", "I don't know, I struggle to show it."] },
+  { type: "t", q: "What is something you wish Lucky understood about you?", p: "Type your thoughts here..." },
+  { type: "t", q: "What is something you wish Lucky felt more from you?", p: "Type your thoughts here..." },
+  { type: "t", q: "What is one thing you miss about us?", p: "Type your thoughts here..." },
+  { type: "t", q: "What do you think we need to improve together?", p: "Type your thoughts here..." },
+  { type: "t", q: "If you could leave one honest message for Lucky, what would it be?", p: "Write your message..." }
+];
 
-    let curIdx = 0;
-    const answers = {};
+let idx = 0;
+const box = document.getElementById('box');
+const pContainer = document.getElementById('pContainer');
+const pBar = document.getElementById('pBar');
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+function renderLanding() {
+  box.innerHTML = `
+    <div class="alien">👽</div>
+    <h1>Hi, Vincent.</h1>
+    <p>A tiny alien came from Lucky's universe.</p>
+    <p><i>"I'm here because someone cares about understanding you."</i></p>
+    <button class="btn-primary" onclick="renderPromise()">Enter the universe ✨</button>
+  `;
+}
 
-    function startQuiz() {
-      curIdx = 0;
-      showScreen('scr-quiz');
-      renderQuestion();
-    }
+function renderPromise() {
+  box.innerHTML = `
+    <div class="alien">🌌</div>
+    <h1>Before We Start...</h1>
+    <p>This is not a test. There is no right or wrong answer.</p>
+    <p>You don't have to choose the answer that makes someone happy.</p>
+    <p><strong>Just choose the one that feels closest to your heart.</strong></p>
+    <button class="btn-primary" onclick="startQuiz()">I understand 🤍</button>
+  `;
+}
 
-    function renderQuestion() {
-      const q = qList[curIdx];
-      document.getElementById('q-num').innerText = `Question ${curIdx + 1} / 10`;
-      document.getElementById('q-text').innerText = q.q;
-      document.getElementById('prog-fill').style.width = `${((curIdx + 1) / 10) * 100}%`;
+function startQuiz() {
+  idx = 0;
+  pContainer.style.display = 'block';
+  renderQuestion();
+}
 
-      const mcBox = document.getElementById('mc-options');
-      const essayBox = document.getElementById('essay-box');
-      const essayInput = document.getElementById('essay-input');
+function renderQuestion() {
+  pBar.style.width = ((idx + 1) / qList.length * 100) + '%';
+  const item = qList[idx];
+  
+  if (item.type === 'c') {
+    let btns = item.o.map(opt => `<button class="option-btn" onclick="nextQ()">${opt}</button>`).join('');
+    box.innerHTML = `
+      <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
+      <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
+      <div class="options-grid">${btns}</div>
+    `;
+  } else {
+    box.innerHTML = `
+      <p style="font-size: 11px; color: #a78bfa; font-weight: bold;">QUESTION ${idx + 1} OF 10</p>
+      <h1 style="font-size: 17px; margin-top: 5px;">${item.q}</h1>
+      <textarea placeholder="${item.p}"></textarea>
+      <button class="btn-primary" onclick="nextQ()">Next →</button>
+    `;
+  }
+}
 
-      if (q.type === 'mc') {
-        mcBox.style.display = 'flex';
-        essayBox.style.display = 'none';
-        mcBox.innerHTML = '';
-        q.opts.forEach(opt => {
-          const btn = document.createElement('button');
-          btn.innerText = opt;
-          btn.onclick = () => selectMc(opt);
-          mcBox.appendChild(btn);
-        });
-      } else {
-        mcBox.style.display = 'none';
-        essayBox.style.display = 'block';
-        essayInput.value = '';
-      }
-    }
+function nextQ() {
+  idx++;
+  if (idx < qList.length) {
+    renderQuestion();
+  } else {
+    pContainer.style.display = 'none';
+    renderReflection();
+  }
+}
 
-    function selectMc(val) {
-      answers[`Q${curIdx + 1}: ${qList[curIdx].q}`] = val;
-      nextQuestion();
-    }
+function renderReflection() {
+  box.innerHTML = `
+    <div class="alien">🪐</div>
+    <h1>Thank You, Vincent.</h1>
+    <p>Some feelings are difficult to say out loud.</p>
+    <p>But every honest answer deserves to be heard.</p>
+    <button class="btn-primary" onclick="renderLetter()">A letter from Lucky 💌</button>
+  `;
+}
 
-    function nextQuestion() {
-      const q = qList[curIdx];
-      if (q.type === 'essay') {
-        const txt = document.getElementById('essay-input').value.trim();
-        answers[`Q${curIdx + 1}: ${q.q}`] = txt || "(Skipped/Blank)";
-      }
+function renderLetter() {
+  box.innerHTML = `
+    <div class="alien">💌</div>
+    <h1>For You</h1>
+    <div class="letter-box">
+Hi Vincent,
 
-      curIdx++;
-      if (curIdx < qList.length) {
-        renderQuestion();
-      } else {
-        prepareSubmission();
-        showScreen('scr-letter');
-      }
-    }
+I made this because I didn't want to keep guessing or asking questions that feel like pressure. 
 
-    function prepareSubmission() {
-      const hiddenContainer = document.getElementById('hidden-inputs');
-      hiddenContainer.innerHTML = '';
-      for (const [key, val] of Object.entries(answers)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = val;
-        hiddenContainer.appendChild(input);
-      }
-    }
-  </script>
+I don't need you to be perfect, and I'm not here to blame you for anything. I just want to know if we're still walking in the same direction, or if you need a moment to breathe.
+
+Thank you for being honest in every step today.
+    </div>
+    <button class="btn-primary" onclick="renderEnding()">Complete Mission →</button>
+  `;
+}
+
+function renderEnding() {
+  box.innerHTML = `
+    <div class="alien">🛸</div>
+    <h1>Mission Completed 👽</h1>
+    <p>Whatever happens next, thank you for being honest.</p>
+    <p style="font-size: 12px; color: #a78bfa;">You can now close this tab.</p>
+  `;
+}
+
+renderLanding();
+</script>
 </body>
 </html>
