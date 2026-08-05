@@ -29,6 +29,26 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background Stars Effect */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                  radial-gradient(1.5px 1.5px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                  radial-gradient(2px 2px at 90px 40px, #a78bfa, rgba(0,0,0,0)),
+                  radial-gradient(1.5px 1.5px at 160px 120px, #ffffff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+      opacity: 0.6;
+      z-index: 0;
     }
 
     .container {
@@ -40,10 +60,19 @@
       padding: 28px;
       backdrop-filter: blur(10px);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      position: relative;
+      z-index: 1;
+      text-align: center;
     }
 
     .screen { display: none; }
     .screen.active { display: block; }
+
+    .alien {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
 
     h1, h2 {
       font-weight: 600;
@@ -55,7 +84,11 @@
       color: var(--text-sub);
       font-size: 0.95rem;
       line-height: 1.6;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+    }
+
+    p i {
+      color: var(--accent);
     }
 
     .progress-bar {
@@ -80,6 +113,7 @@
       letter-spacing: 1px;
       color: var(--accent);
       margin-bottom: 8px;
+      text-align: left;
     }
 
     .btn-group {
@@ -145,34 +179,42 @@
       font-size: 0.95rem;
       line-height: 1.7;
       color: #e5e7eb;
+      text-align: left;
     }
   </style>
 </head>
 <body>
 
+  <div class="stars"></div>
+
   <div class="container">
 
-    <!-- SCREEN 1: WELCOME -->
+    <!-- SCREEN 1: WELCOME (PEMBUKA SPESIAL FOR VINCENT) -->
     <div id="scr-welcome" class="screen active">
-      <h1>Alien Check ✨</h1>
-      <p>A little space check-in between us.</p>
+      <div class="alien">👽</div>
+      <h1>Hi, Vincent.</h1>
+      <p>A tiny alien came from Lucky's universe.</p>
+      <p><i>"I'm here because someone cares about understanding you."</i></p>
       <button class="btn-primary" onclick="showScreen('scr-rules')">Enter the universe ✨</button>
     </div>
 
-    <!-- SCREEN 2: RULES -->
+    <!-- SCREEN 2: BRIEFING / RULES -->
     <div id="scr-rules" class="screen">
-      <h2>Briefing 🤍</h2>
-      <p>There are 10 questions ahead. No right or wrong answers, just honest check-ins. Take your time.</p>
+      <div class="alien">🌌</div>
+      <h1>Before We Start...</h1>
+      <p>This is not a test.<br>There is no right or wrong answer.</p>
+      <p>You don't have to choose the answer that makes someone happy.</p>
+      <p><strong>Just choose the one that feels closest to your heart.</strong></p>
       <button class="btn-primary" onclick="startQuiz()">I understand 🤍</button>
     </div>
 
     <!-- SCREEN 3: QUIZ -->
-    <div id="scr-quiz" class="screen">
+    <div id="scr-quiz" class="screen" style="text-align: left;">
       <div class="progress-bar">
         <div id="prog-fill" class="progress-fill"></div>
       </div>
       <div id="q-num" class="q-number">Question 1 / 10</div>
-      <h2 id="q-text">Loading question...</h2>
+      <h2 id="q-text" style="text-align: left;">Loading question...</h2>
 
       <div id="mc-options" class="btn-group"></div>
 
@@ -184,7 +226,8 @@
 
     <!-- SCREEN 4: LETTER & SUBMIT -->
     <div id="scr-letter" class="screen">
-      <h2>A letter from Lucky 💌</h2>
+      <div class="alien">💌</div>
+      <h2>A letter from Lucky</h2>
       <div class="letter-box">
         Thank you for walking through these questions with me. I value every honest word you share. No matter where we are or how busy life gets, this space is always open for us.
       </div>
